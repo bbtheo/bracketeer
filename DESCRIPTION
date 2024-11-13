@@ -1,0 +1,12 @@
+Package: bracketeer
+Title: Create tournament or league time table
+Version: 0.0.0.9000
+Authors@R: 
+    person("Theo", "Blauberg", , "theo.blauberg@outlook.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Create, manage, and visualise of league and tournament brackets. 
+    The package will support in the future various tournament styles and will allow users to create bracket diagrams.
+License: `use_mit_license()`
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
