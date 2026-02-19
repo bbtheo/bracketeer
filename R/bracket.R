@@ -319,22 +319,23 @@ is_complete.bracket <- function(bracket) {
 #'
 #' Check if current round is complete and update bracket state.
 #'
-#' @param bracket A bracket object
-#' @param stage_id Optional stage identifier for tournament methods.
+#' @param x A bracket object.
+#' @param stage Optional stage identifier for tournament methods.
+#' @param ... Additional method-specific arguments.
 #'
 #' @return Updated bracket object
 #' @export
-advance <- function(bracket, stage_id = NULL) {
+advance <- function(x, stage = NULL, ...) {
     UseMethod("advance")
 }
 
 #' @rdname advance
 #' @export
-advance.bracket <- function(bracket, stage_id = NULL) {
+advance.bracket <- function(x, stage = NULL, ...) {
     # Default implementation - just return bracket unchanged
     # Specific types may override
 
-    bracket
+    x
 }
 
 #' Teardown tournament state
@@ -342,17 +343,18 @@ advance.bracket <- function(bracket, stage_id = NULL) {
 #' For tournament runtimes, this un-materializes a stage and its downstream
 #' dependents so upstream results can be corrected and replayed.
 #'
-#' @param bracket A bracket or tournament object.
-#' @param stage_id Stage identifier to teardown (tournament method).
+#' @param x A bracket or tournament object.
+#' @param stage Stage identifier to teardown (tournament method).
+#' @param ... Additional method-specific arguments.
 #'
 #' @return Updated object.
 #' @export
-teardown <- function(bracket, stage_id = NULL) {
+teardown <- function(x, stage = NULL, ...) {
     UseMethod("teardown")
 }
 
 #' @rdname teardown
 #' @export
-teardown.bracket <- function(bracket, stage_id = NULL) {
-    bracket
+teardown.bracket <- function(x, stage = NULL, ...) {
+    x
 }

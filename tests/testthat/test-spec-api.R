@@ -61,6 +61,24 @@ test_that("stage verbs work on spec() and tournament() pipes", {
     expect_gt(nrow(get_matches(trn$stage_state$groups$bracket)), 0L)
 })
 
+test_that("tournament pipe supports swiss followed by single_elim with take selector", {
+    teams <- paste("Team", LETTERS[1:16])
+
+    trn <- tournament(teams) |>
+        swiss("open", rounds = 5) |>
+        single_elim("playoffs", take = top_n(8))
+
+    expect_s3_class(trn, "tournament")
+    expect_true("open" %in% names(trn$stage_state))
+    expect_true("playoffs" %in% names(trn$stage_state))
+    expect_true(isTRUE(trn$stage_state$open$materialized))
+    expect_false(isTRUE(trn$stage_state$playoffs$materialized))
+    expect_equal(trn$spec$edges$open_to_playoffs$from_stage_id, "open")
+    expect_equal(trn$spec$edges$open_to_playoffs$to_stage_id, "playoffs")
+    expect_equal(trn$spec$edges$open_to_playoffs$take$kind, "top_n")
+    expect_equal(trn$spec$edges$open_to_playoffs$take$params$n, 8L)
+})
+
 test_that("stage verbs auto-wire from previous stage in linear specs", {
     s <- spec() |>
         round_robin("groups") |>

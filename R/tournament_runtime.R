@@ -222,13 +222,49 @@ set_result.tournament <- function(bracket, match_id, score1, score2,
         return(tournament)
     }
 
-    advance(tournament, stage_id = target_stage_id)
+    advance(tournament, stage = target_stage_id)
+}
+
+resolve_runtime_stage_argument <- function(stage = NULL, dots = list(), fn = "advance") {
+    dot_names <- names(dots)
+    if (is.null(dot_names)) {
+        dot_names <- rep("", length(dots))
+    }
+
+    if (any(dot_names == "")) {
+        stop("`", fn, "()` does not accept unnamed additional arguments")
+    }
+
+    unknown <- unique(dot_names[dot_names != "stage_id"])
+    if (length(unknown) > 0L) {
+        unknown_fmt <- paste0("`", unknown, "`", collapse = ", ")
+        stop("`", fn, "()` got unexpected argument(s): ", unknown_fmt)
+    }
+
+    if (!"stage_id" %in% dot_names) {
+        return(stage)
+    }
+
+    if (sum(dot_names == "stage_id") > 1L) {
+        stop("`", fn, "()` received `stage_id` more than once")
+    }
+
+    if (!is.null(stage)) {
+        stop("`", fn, "()` received both `stage` and `stage_id`; use `stage`")
+    }
+
+    dots[["stage_id"]]
 }
 
 #' @rdname advance
 #' @export
-advance.tournament <- function(bracket, stage_id = NULL) {
-    tournament <- bracket
+advance.tournament <- function(x, stage = NULL, ...) {
+    tournament <- x
+    stage_id <- resolve_runtime_stage_argument(
+        stage = stage,
+        dots = list(...),
+        fn = "advance"
+    )
 
     if (is.null(stage_id)) {
         ready <- ready_to_advance_stage_ids(tournament)
@@ -388,8 +424,13 @@ advance.tournament <- function(bracket, stage_id = NULL) {
 
 #' @rdname teardown
 #' @export
-teardown.tournament <- function(bracket, stage_id = NULL) {
-    tournament <- bracket
+teardown.tournament <- function(x, stage = NULL, ...) {
+    tournament <- x
+    stage_id <- resolve_runtime_stage_argument(
+        stage = stage,
+        dots = list(...),
+        fn = "teardown"
+    )
     assert_runtime_scalar_string(stage_id, arg = "stage_id")
 
     if (!stage_id %in% names(tournament$stage_state)) {

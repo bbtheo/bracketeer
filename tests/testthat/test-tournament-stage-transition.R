@@ -266,6 +266,22 @@ test_that("advance and teardown validate stage identifiers", {
     )
 })
 
+test_that("advance and teardown accept stage argument without partial-match warnings", {
+    old_options <- options(warnPartialMatchArgs = TRUE)
+    on.exit(options(old_options), add = TRUE)
+
+    trn <- tournament(paste("Team", LETTERS[1:4]), auto_advance = FALSE) |>
+        round_robin("groups") |>
+        single_elim("playoffs")
+
+    trn <- complete_stage_results(trn, "groups")
+    expect_no_warning(trn <- advance(trn, stage = "groups"))
+    expect_true(trn$stage_state$playoffs$materialized)
+
+    expect_no_warning(trn <- teardown(trn, stage = "playoffs"))
+    expect_false(trn$stage_state$playoffs$materialized)
+})
+
 test_that("multi-stage linear flow auto-advances through all stages", {
     trn <- tournament(paste("Team", sprintf("%02d", 1:8)), auto_advance = TRUE) |>
         round_robin("groups") |>

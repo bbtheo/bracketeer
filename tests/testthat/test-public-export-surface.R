@@ -13,3 +13,15 @@ test_that("public export surface matches planned tournament API", {
 
     expect_setequal(exports, expected)
 })
+
+test_that("runtime verbs expose stage-based argument names", {
+    advance_args <- names(formals(advance))
+    teardown_args <- names(formals(teardown))
+
+    expect_equal(advance_args[[1]], "x")
+    expect_equal(teardown_args[[1]], "x")
+    expect_equal(advance_args[[2]], "stage")
+    expect_equal(teardown_args[[2]], "stage")
+    expect_false("stage_id" %in% advance_args)
+    expect_false("stage_id" %in% teardown_args)
+})

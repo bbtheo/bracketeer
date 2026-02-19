@@ -6,16 +6,18 @@
 \alias{teardown.tournament}
 \title{Teardown tournament state}
 \usage{
-teardown(bracket, stage_id = NULL)
+teardown(x, stage = NULL, ...)
 
-\method{teardown}{bracket}(bracket, stage_id = NULL)
+\method{teardown}{bracket}(x, stage = NULL, ...)
 
-\method{teardown}{tournament}(bracket, stage_id = NULL)
+\method{teardown}{tournament}(x, stage = NULL, ...)
 }
 \arguments{
-\item{bracket}{A bracket or tournament object.}
+\item{x}{A bracket or tournament object.}
 
-\item{stage_id}{Stage identifier to teardown (tournament method).}
+\item{stage}{Stage identifier to teardown (tournament method).}
+
+\item{...}{Additional method-specific arguments.}
 }
 \value{
 Updated object.

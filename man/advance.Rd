@@ -11,9 +11,9 @@
 \alias{advance.tournament}
 \title{Advance tournament to next round}
 \usage{
-advance(bracket, stage_id = NULL)
+advance(x, stage = NULL, ...)
 
-\method{advance}{bracket}(bracket, stage_id = NULL)
+\method{advance}{bracket}(x, stage = NULL, ...)
 
 \method{advance}{double_elim_bracket}(bracket, stage_id = NULL)
 
@@ -23,12 +23,14 @@ advance(bracket, stage_id = NULL)
 
 \method{advance}{swiss_bracket}(bracket, stage_id = NULL)
 
-\method{advance}{tournament}(bracket, stage_id = NULL)
+\method{advance}{tournament}(x, stage = NULL, ...)
 }
 \arguments{
-\item{bracket}{A bracket object}
+\item{x}{A bracket object.}
 
-\item{stage_id}{Optional stage identifier for tournament methods.}
+\item{stage}{Optional stage identifier for tournament methods.}
+
+\item{...}{Additional method-specific arguments.}
 }
 \value{
 Updated bracket object
