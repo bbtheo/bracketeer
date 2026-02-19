@@ -1,53 +1,62 @@
-# bracketeer NEWS
+# bracketeer 0.1.0
 
-## Tournament API Rewrite (Planned Surface)
+First release.
 
-### New primary workflow
+## Tournament construction
 
-- Tournament construction now centers on `spec()`, `build()`, and `tournament()`.
-- Stage wiring is done directly by stage verbs in pipe flow:
-  `round_robin()`, `single_elim()`, `double_elim()`, `swiss()`, `two_leg()`,
-  `group_stage_knockout()`.
-- Stage routing now uses `take =` selectors (`top_n()`, `remaining()`, `losers()`,
-  grouped variants) instead of standalone transition helper workflows.
-- Tournament result entry uses `result(trn, stage, match, score = c(x, y))` and
-  `results(trn, stage, df)` (`match`, `score1`, `score2` columns).
-- Inspection now uses noun helpers: `matches()`, `standings()`, `stage_status()`,
-  `winner()`, `rankings()`, `routing_log()`.
+- `tournament(participants, auto_advance = TRUE)` creates a live tournament
+  runtime ready for result entry.
+- `spec()` creates a reusable blueprint without participants; materialize it
+  with `build(spec, participants)`.
+- `validate(spec, n)` runs a preflight feasibility check before building.
 
-### Removed/renamed legacy tournament APIs
+## Stage verbs
 
-- `tournament_spec()` -> `spec()`
-- `build_tournament()` -> `build()`
-- `validate_tournament()` -> `validate()`
-- `from_previous()` -> `previous_stage()`
-- `qualify_remaining()` -> `remaining()`
-- `qualify_losers()` -> `losers()`
-- `get_routing_log()` -> `routing_log()`
-- Tournament-level direct exports:
-  `export_matches()` -> `matches()`,
-  `export_standings()` -> `standings()`,
-  `export_tournament_log()` -> `routing_log()`
-- Legacy graph-construction style (`add_stage()`, `add_transition()`, `split_stage()`)
-  is replaced in tests and docs by explicit stage-verb pipeline wiring.
+Pipe stage types onto `tournament()` or `spec()` to define the competition
+structure:
 
-## Breaking Changes
+- `round_robin(id, ...)` — round-robin stage; supports `groups =` for
+  parallel group play.
+- `single_elim(id, ...)` — single-elimination bracket.
+- `double_elim(id, ...)` — double-elimination bracket.
+- `swiss(id, ...)` — Swiss-system stage.
+- `two_leg(id, ...)` — two-leg knockout stage.
+- `group_stage_knockout(id, ...)` — combined group stage and knockout.
 
-- Removed legacy spec APIs: `bracket_spec()`, `single_elim_spec()`, `double_elim_spec()`,
-  `round_robin_spec()`, `swiss_spec()`, `group_stage_knockout_spec()`,
-  `two_leg_knockout_spec()`, `build_bracket()`, `fit_bracket()`, `update_spec()`, and
-  `print.bracket_spec()`.
-- Tournament graph stages now use stage constructors only:
-  `single_elim_stage()`, `double_elim_stage()`, `round_robin_stage()`,
-  `swiss_stage()`, `group_stage_knockout_stage()`, and `two_leg_stage()`.
-- `tournament_spec()` no longer inherits `bracket_spec`.
-- `bracket()` no longer accepts spec/stage objects as the first argument.
+Each verb accepts `from = previous_stage()` (implicit in linear chains;
+explicit `from =` required only when branching) and `take =` for routing.
 
-## Replacement Table
+## Routing selectors
 
-- `single_elim_spec()` -> `single_elim_stage()`
-- `double_elim_spec()` -> `double_elim_stage()`
-- `round_robin_spec()` -> `round_robin_stage()`
-- `swiss_spec()` -> `swiss_stage()`
-- `group_stage_knockout_spec()` -> `group_stage_knockout_stage()`
-- `two_leg_knockout_spec()` -> `two_leg_stage()`
+Selectors sit in `take =` and resolve against the source stage's standings
+at transition time:
+
+- `top_n(n)`, `bottom_n(n)`, `slice_range(from, to)` — flat ranking cuts.
+- `top_per_group(n)`, `bottom_per_group(n)`, `slice_per_group(from, to)` —
+  per-group cuts; require a grouped source stage.
+- `remaining()` — participants not yet consumed by a prior transition.
+- `losers()` — eliminated participants.
+- `filter_by(fn)` — custom predicate on the standings data frame.
+
+## Result entry
+
+- `result(trn, stage, match, score = c(x, y))` enters a single match result.
+  For best-of series, pass per-game scores as a longer vector.
+- `results(trn, stage, df)` batch-enters results from a data frame with
+  columns `match`, `score1`, `score2`.
+- Auto-advance is on by default: when the last match in a stage is entered,
+  all downstream stages materialize automatically. Disable with
+  `auto_advance = FALSE` and trigger manually with `advance(trn, stage)`.
+- `teardown(trn, stage)` un-materializes a stage and all downstream
+  dependents, preserving source-stage results.
+
+## Inspection
+
+- `matches(trn, stage, status)` — match table, filterable by stage and
+  status (`"pending"`, `"complete"`, `"all"`).
+- `standings(trn, stage)` — standings table for one or all stages.
+- `stage_status(trn)` — per-stage overview with columns `stage`, `status`,
+  `complete`, `total`, `materialized`.
+- `winner(trn)` — tournament winner, or `NA` if incomplete.
+- `rankings(trn)` — final placement table.
+- `routing_log(trn)` — transition audit trail.
