@@ -1,0 +1,184 @@
+---
+title: "LoL Worlds: Swiss Stage to Top-Cut Bracket"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{LoL Worlds: Swiss Stage to Top-Cut Bracket}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(bracketeer)
+```
+
+This vignette models a **League of Legends Worlds** style event:
+
+- A Swiss stage where all 16 teams compete over several rounds,
+- The top 8 advance to a single-elimination top-cut bracket.
+
+This is the canonical **linear chain** pattern — two stages in sequence
+with no branching. It demonstrates:
+
+- `swiss("open", rounds = 5)` for a Swiss-system stage,
+- `single_elim("top_cut", take = top_n(8))` reading from the prior stage
+  automatically (no `from =` needed),
+- `top_n(8)` as the simplest flat routing selector,
+- the auto-advance default, and
+- full inspection with `stage_status()`, `standings()`, and `winner()`.
+
+---
+
+## 1) Define the entrants
+
+```{r teams}
+teams <- c(
+  "Gen.G",        "T1",          "Hanwha Life", "Dplus KIA",
+  "BLG",          "TES",         "LNG",         "JDG",
+  "G2",           "Fnatic",      "MAD Lions",   "BDS",
+  "Cloud9",       "Team Liquid",  "FlyQuest",    "100 Thieves"
+)
+
+length(teams)
+```
+
+---
+
+## 2) Define the tournament
+
+Because the pipeline is a straight line, `from` is never written. The
+`single_elim` stage implicitly reads from `swiss` via `previous_stage()`.
+
+```{r define}
+trn <- tournament(teams) |>
+  swiss("open", rounds = 5) |>
+  single_elim("top_cut", take = top_n(8))
+```
+
+This is the entire routing definition: 16 teams play a 5-round Swiss; the
+top 8 by Swiss standings advance to a single-elimination bracket.
+
+---
+
+## 3) Preflight check (spec path)
+
+When reusing a format across multiple events, define a spec first and
+validate before building.
+
+```{r spec-path}
+worlds_spec <- spec() |>
+  swiss("open", rounds = 5) |>
+  single_elim("top_cut", take = top_n(8))
+
+validate(worlds_spec, n = 16)   # passes
+
+# Build for this year's entrants
+trn <- worlds_spec |> build(teams)
+```
+
+---
+
+## 4) Inspect the Swiss schedule
+
+```{r swiss-schedule}
+stage_status(trn)
+
+open_ms <- matches(trn, "open")
+nrow(open_ms)   # 5 rounds × 8 matches = 40 matches
+head(open_ms)
+```
+
+---
+
+## 5) Enter Swiss results
+
+Round-by-round entry. Swiss schedules are generated round-by-round as
+results come in, so you'll see new pending matches after each round.
+
+```{r enter-swiss}
+for (i in seq_len(nrow(open_ms))) {
+  trn <- trn |> result("open", match = open_ms$id[i], score = c(1, 0))
+
+  # Refresh pending matches — Swiss generates each round dynamically.
+  open_ms <- matches(trn, "open")
+}
+```
+
+After the final Swiss result, the top-cut stage materializes automatically.
+
+---
+
+## 6) Confirm advancement
+
+```{r post-swiss}
+stage_status(trn)
+#   stage     status     complete  total  materialized
+#   open      complete         40     40          TRUE
+#   top_cut   active            0      7          TRUE
+
+standings(trn, "open")   # full Swiss standings, 1st through 16th
+matches(trn, "top_cut")  # 8-team bracket
+```
+
+---
+
+## 7) Run the top-cut bracket
+
+```{r run-top-cut}
+cut_ms <- matches(trn, "top_cut")
+
+for (i in seq_len(nrow(cut_ms))) {
+  trn <- trn |> result("top_cut", match = cut_ms$id[i], score = c(1, 0))
+}
+```
+
+---
+
+## 8) Outcomes
+
+```{r outcomes}
+winner(trn)
+rankings(trn)
+routing_log(trn)
+```
+
+---
+
+## 9) Manual advance mode
+
+For tournament operations where stages advance on an explicit signal (e.g.,
+after a broadcast break), use `auto_advance = FALSE`:
+
+```{r manual}
+trn <- tournament(teams, auto_advance = FALSE) |>
+  swiss("open", rounds = 5) |>
+  single_elim("top_cut", take = top_n(8))
+
+# ... enter all Swiss results ...
+
+# Stage does not advance until you say so:
+trn <- trn |> advance("open")
+```
+
+---
+
+## 10) Batch result entry
+
+`results()` accepts a data frame for entering multiple results at once.
+
+```{r batch}
+round1 <- data.frame(
+  match  = matches(trn, "open")$id,
+  score1 = rep(1L, 8),
+  score2 = rep(0L, 8)
+)
+
+trn <- trn |> results("open", round1)
+```

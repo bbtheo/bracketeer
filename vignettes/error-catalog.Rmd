@@ -1,0 +1,204 @@
+---
+title: "bracketeer Error Catalog"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bracketeer Error Catalog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(bracketeer)
+```
+
+This catalog lists common errors with likely causes and direct fixes.
+Errors include actionable identifiers (stage IDs, match IDs, participant
+counts) wherever possible.
+
+---
+
+## 1) Infeasible transition count
+
+**Symptom:** `validate()` or `build()` fails because the selector would
+pick more participants than are available from the source stage.
+
+```{r}
+my_spec <- spec() |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(8))
+
+validate(my_spec, n = 6)
+# Error: stage 'finals' requires 8 participants via `top_n(8)` but source
+# stage 'groups' can produce at most 6. Adjust the selector or increase
+# participant count (currently n = 6).
+```
+
+**Fix:**
+
+- Reduce `n` in `top_n(n)` to fit the available pool, or
+- increase the participant count passed to `validate()` / `build()`.
+
+---
+
+## 2) `top_per_group()` on a non-grouped stage
+
+**Symptom:** Error when a per-group selector is used on a stage without
+group structure.
+
+```{r}
+trn <- tournament(paste("Team", 1:8)) |>
+  round_robin("league") |>
+  single_elim("playoffs", take = top_per_group(2))
+# Error: `top_per_group()` requires the source stage 'league' to have
+# groups, but it was defined without `groups =`. Use `top_n()` for flat
+# standings, or add `groups =` to the source stage.
+```
+
+**Fix:**
+
+- Use `top_n(n)` if the source stage is a flat round-robin, or
+- add `groups = k` to the source stage verb if group play is intended.
+
+---
+
+## 3) `previous_stage()` on the first stage
+
+**Symptom:** Error when the first stage verb implicitly or explicitly uses
+`previous_stage()` but there is no preceding stage.
+
+```{r}
+spec() |>
+  single_elim("finals", from = previous_stage())
+# Error: `previous_stage()` in stage 'finals' resolved to no prior stage.
+# 'finals' is the first stage in this spec. Provide an explicit `from =`
+# or add a source stage before it.
+```
+
+**Fix:** This only happens if you set `from = previous_stage()` explicitly
+on the first stage, or if you call a stage verb on an empty spec without a
+source. Add the source stage first:
+
+```{r}
+spec() |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(8))  # from = previous_stage() is implicit, resolves to "groups"
+```
+
+---
+
+## 4) Explicit `from =` stage ID not found
+
+**Symptom:** Error when a `from =` argument references a stage that does
+not exist.
+
+```{r}
+tournament(paste("Team", 1:16)) |>
+  round_robin("groups") |>
+  single_elim("finals", from = "typo_stage", take = top_n(8))
+# Error: `from = "typo_stage"` in stage 'finals' references a stage that
+# does not exist. Known stages: groups. Check the stage ID spelling.
+```
+
+**Fix:** Check the stage ID spelling. Use the exact string passed to the
+source stage verb.
+
+---
+
+## 5) Overlapping selectors in a branch
+
+**Symptom:** Two stages branching from the same source both select the
+same participants, causing a conflict.
+
+```{r}
+tournament(paste("Team", 1:16)) |>
+  round_robin("groups") |>
+  single_elim("championship", from = "groups", take = top_n(8)) |>
+  single_elim("consolation",  from = "groups", take = top_n(8))  # same 8!
+# Error: stages 'championship' and 'consolation' both consume overlapping
+# participants from source 'groups'. Use `remaining()` for the second
+# branch to select the leftover pool, or adjust selectors to be disjoint.
+```
+
+**Fix:** Use `remaining()` for the second branch:
+
+```{r}
+tournament(paste("Team", 1:16)) |>
+  round_robin("groups") |>
+  single_elim("championship", from = "groups", take = top_n(8)) |>
+  single_elim("consolation",  from = "groups", take = remaining())
+```
+
+---
+
+## 6) Overwrite blocked by downstream materialization
+
+**Symptom:** Attempting to change a result after a downstream stage has
+already been materialized from it.
+
+```{r}
+# After all group results have been entered and "knockout" has materialized:
+trn <- trn |> result("groups", match = 1, score = c(0, 2))
+# Error: result for match 1 in stage 'groups' cannot be overwritten because
+# downstream stage 'knockout' has already been materialized from 'groups'.
+# Use teardown(trn, "knockout") first to unlock result editing.
+```
+
+**Fix:** Use `teardown()` to un-materialize the blocking downstream stage,
+then re-enter the corrected result:
+
+```{r}
+trn <- teardown(trn, "knockout")
+trn <- trn |> result("groups", match = 1, score = c(0, 2))
+# "knockout" will re-materialize automatically when groups is complete again.
+```
+
+---
+
+## 7) `validate()` fails for duplicate stage IDs
+
+**Symptom:** Two stage verbs use the same stage ID.
+
+```{r}
+spec() |>
+  round_robin("stage") |>
+  single_elim("stage")  # duplicate!
+# Error: stage ID 'stage' is already registered. Stage IDs must be unique.
+# Provide a distinct ID for each stage.
+```
+
+**Fix:** Use unique IDs for every stage.
+
+---
+
+## 8) Invalid `score` argument
+
+**Symptom:** `result()` receives a score that is not a numeric vector of
+at least length 2.
+
+```{r}
+trn <- trn |> result("groups", match = 1, score = 2)
+# Error: `score` must be a numeric vector of length >= 2 (e.g., c(2, 1)).
+# Received: a single value (2). Did you mean score = c(2, 1)?
+```
+
+**Fix:** Always pass `score` as a vector: `score = c(home_score, away_score)`.
+
+---
+
+## Operational checklist
+
+1. Define: `tournament(teams) |> <stage_verbs>`.
+2. (Optional) Validate: `validate(spec, n)` before building.
+3. Inspect schedule: `matches(trn, stage)`, `stage_status(trn)`.
+4. Enter results: `result(trn, stage, match, score = c(x, y))`.
+5. Auto-advance is the default — check `stage_status(trn)` to confirm.
+6. Use `teardown(trn, stage)` if you need to correct results after advancement.
+7. Finish: `winner(trn)`, `rankings(trn)`, `routing_log(trn)`.

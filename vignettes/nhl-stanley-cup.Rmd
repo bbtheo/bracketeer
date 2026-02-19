@@ -1,0 +1,157 @@
+---
+title: "NHL Stanley Cup Playoffs: Best-of-7 Bracket"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NHL Stanley Cup Playoffs: Best-of-7 Bracket}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(bracketeer)
+```
+
+This vignette models the NHL Stanley Cup Playoffs as a 16-team
+single-elimination bracket where every series is best-of-7.
+
+It demonstrates:
+
+- `single_elim("playoffs", best_of = 7, seed = TRUE)` for a seeded
+  bracket with series play,
+- `result(trn, stage, match, score = c(x, y))` for series score entry,
+- inspecting bracket state with `matches()` and `standings()`,
+- `winner()` for the final champion.
+
+> **Note on the conference format.** The real Stanley Cup format runs the
+> Eastern and Western conference brackets in parallel and merges their
+> winners into the Final. Merging from multiple upstream stages into one
+> downstream stage is a planned feature not yet available in this version.
+> This vignette models a simplified bracket where all 16 teams compete in
+> one seeded tree.
+
+---
+
+## 1) Playoff field
+
+```{r teams}
+teams <- c(
+  # East seeds 1–8
+  "NY Rangers",  "Panthers", "Bruins",      "Maple Leafs",
+  "Hurricanes",  "Lightning", "Islanders",   "Capitals",
+  # West seeds 9–16 (seeded across both conferences in bracket order)
+  "Stars",       "Avalanche", "Canucks",     "Oilers",
+  "Jets",        "Golden Knights", "Kings",  "Predators"
+)
+
+length(teams)
+```
+
+---
+
+## 2) Define the tournament
+
+```{r define}
+trn <- tournament(teams) |>
+  single_elim("playoffs", best_of = 7, seed = TRUE)
+```
+
+`best_of = 7` means each match is a series: the first team to 4 wins
+advances. `seed = TRUE` applies standard bracket seeding (1 vs 16, 2 vs
+15, etc.).
+
+---
+
+## 3) Inspect the first-round schedule
+
+```{r schedule}
+stage_status(trn)
+
+r1 <- matches(trn, "playoffs", status = "pending")
+nrow(r1)   # 8 first-round series
+r1[, c("id", "participant1", "participant2")]
+```
+
+---
+
+## 4) Enter first-round series results
+
+Each result is the final series score (wins–wins).
+
+```{r round-1}
+trn <- trn |> result("playoffs", match = 1, score = c(4, 2))  # Rangers over Capitals
+trn <- trn |> result("playoffs", match = 2, score = c(4, 1))  # Panthers over Islanders
+trn <- trn |> result("playoffs", match = 3, score = c(3, 4))  # Lightning over Bruins
+trn <- trn |> result("playoffs", match = 4, score = c(2, 4))  # Hurricanes over Leafs
+trn <- trn |> result("playoffs", match = 5, score = c(4, 1))  # Stars over Predators
+trn <- trn |> result("playoffs", match = 6, score = c(4, 3))  # Avalanche over Kings
+trn <- trn |> result("playoffs", match = 7, score = c(2, 4))  # Oilers over Canucks
+trn <- trn |> result("playoffs", match = 8, score = c(4, 2))  # Jets over Golden Knights
+```
+
+---
+
+## 5) Second round
+
+As results advance teams through the bracket, new matches become
+available.
+
+```{r round-2}
+r2 <- matches(trn, "playoffs")
+r2[, c("id", "participant1", "participant2")]
+
+trn <- trn |> result("playoffs", match = 9,  score = c(4, 2))  # Rangers over Hurricanes
+trn <- trn |> result("playoffs", match = 10, score = c(4, 3))  # Panthers over Lightning
+trn <- trn |> result("playoffs", match = 11, score = c(4, 3))  # Stars over Jets
+trn <- trn |> result("playoffs", match = 12, score = c(3, 4))  # Oilers over Avalanche
+```
+
+---
+
+## 6) Conference finals and the Cup
+
+```{r semifinals}
+trn <- trn |> result("playoffs", match = 13, score = c(3, 4))  # Panthers win East
+trn <- trn |> result("playoffs", match = 14, score = c(2, 4))  # Oilers win West
+```
+
+```{r final}
+trn <- trn |> result("playoffs", match = 15, score = c(3, 4))  # Oilers win the Cup
+```
+
+---
+
+## 7) Results
+
+```{r outcomes}
+winner(trn)
+rankings(trn)
+standings(trn, "playoffs")
+```
+
+---
+
+## 8) Batch result entry
+
+For simulation or bulk data entry, `results()` accepts a data frame.
+
+```{r batch}
+series_results <- data.frame(
+  match  = c(1, 2, 3, 4, 5, 6, 7, 8),
+  score1 = c(4, 4, 3, 2, 4, 4, 2, 4),
+  score2 = c(2, 1, 4, 4, 1, 3, 4, 2)
+)
+
+# Reset and replay round 1 from a fresh build:
+trn2 <- tournament(teams) |>
+  single_elim("playoffs", best_of = 7, seed = TRUE)
+
+trn2 <- trn2 |> results("playoffs", series_results)
+```
