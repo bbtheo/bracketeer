@@ -1,0 +1,150 @@
+# FIFA World Cup: Group Stage to Knockout
+
+``` r
+library(bracketeer)
+```
+
+This vignette models a 16-team World Cup: four groups of four teams,
+with the top two from each group advancing to a single-elimination
+knockout round.
+
+It demonstrates:
+
+- `round_robin("groups", groups = 4)` for parallel group play,
+- `top_per_group(2)` for per-group advancement routing,
+- auto-advance behavior (no explicit
+  [`advance()`](https://bbtheo.github.io/bracketeer/reference/advance.md)
+  needed),
+- [`stage_status()`](https://bbtheo.github.io/bracketeer/reference/stage_status.md),
+  [`matches()`](https://bbtheo.github.io/bracketeer/reference/matches.md),
+  and
+  [`standings()`](https://bbtheo.github.io/bracketeer/reference/standings.md)
+  for live inspection.
+
+------------------------------------------------------------------------
+
+## 1) Participant pool
+
+``` r
+teams <- c(
+  "Argentina", "Australia", "Brazil",   "Croatia",
+  "England",   "France",   "Japan",     "Morocco",
+  "Netherlands", "Poland", "Portugal",  "Senegal",
+  "South Korea", "Spain",  "Switzerland", "United States"
+)
+
+length(teams)
+```
+
+------------------------------------------------------------------------
+
+## 2) Define the tournament
+
+`round_robin("groups", groups = 4)` creates four independent groups
+within a single stage node. Each group runs a full round-robin schedule.
+
+`top_per_group(2)` selects the top two finishers from **each group’s own
+standings** — not the top 8 from a combined ranking. This is the
+standard World Cup advancement rule.
+
+``` r
+trn <- tournament(teams) |>
+  round_robin("groups", groups = 4) |>
+  single_elim("knockout", take = top_per_group(2))
+```
+
+`from = previous_stage()` is implicit — “knockout” reads from “groups”
+automatically.
+
+------------------------------------------------------------------------
+
+## 3) Inspect the group schedule
+
+``` r
+stage_status(trn)
+
+group_ms <- matches(trn, "groups")
+nrow(group_ms)   # 4 groups × 6 matches = 24 matches
+head(group_ms)
+```
+
+------------------------------------------------------------------------
+
+## 4) Enter group results
+
+Auto-advance is on by default. Once the last group match is entered, the
+knockout stage materializes automatically with the top two from each
+group.
+
+``` r
+for (i in seq_len(nrow(group_ms))) {
+  trn <- trn |> result("groups", match = group_ms$id[i], score = c(1, 0))
+}
+```
+
+No explicit
+[`advance()`](https://bbtheo.github.io/bracketeer/reference/advance.md)
+call — the knockout stage materializes on its own.
+
+------------------------------------------------------------------------
+
+## 5) Confirm advancement
+
+``` r
+stage_status(trn)
+#   stage     status        complete  total  materialized
+#   groups    complete            24     24          TRUE
+#   knockout  active               0      8          TRUE
+
+matches(trn, "knockout")  # 8 teams: 2 × 4 groups
+```
+
+------------------------------------------------------------------------
+
+## 6) Inspect group standings
+
+``` r
+standings(trn, "groups")
+```
+
+The standings include a group membership column when the source stage
+uses `groups =`.
+
+------------------------------------------------------------------------
+
+## 7) Run the knockout round
+
+``` r
+knockout_ms <- matches(trn, "knockout")
+
+for (i in seq_len(nrow(knockout_ms))) {
+  trn <- trn |> result("knockout", match = knockout_ms$id[i], score = c(1, 0))
+}
+
+winner(trn)
+rankings(trn)
+```
+
+------------------------------------------------------------------------
+
+## 8) Routing audit
+
+[`routing_log()`](https://bbtheo.github.io/bracketeer/reference/routing_log.md)
+records the transition resolution: which participants were selected,
+from which source stage, by which selector.
+
+``` r
+routing_log(trn)
+```
+
+------------------------------------------------------------------------
+
+## 9) Comparison with previous API
+
+| Task                     | Old API                                                                                                                             | New API                                                                                                        |
+|--------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Define groups → knockout | `tournament_spec() \|> add_stage() \|> add_stage() \|> split_stage(from = ..., into = list(...)) \|> build_tournament(spec, teams)` | `tournament(teams) \|> round_robin("groups", groups = 4) \|> single_elim("knockout", take = top_per_group(2))` |
+| Enter a result           | `result(trn, "groups", match_id = 1, score1 = 1, score2 = 0)`                                                                       | `result(trn, "groups", match = 1, score = c(1, 0))`                                                            |
+| Advance stage            | `if (is_stage_complete(trn, "groups")) advance(trn, "groups")`                                                                      | automatic by default                                                                                           |
+| See standings            | `get_standings(trn$stage_state$groups$bracket)`                                                                                     | `standings(trn, "groups")`                                                                                     |
+| Winner                   | `get_winner(trn$stage_state$knockout$bracket)`                                                                                      | `winner(trn)`                                                                                                  |
