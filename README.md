@@ -87,8 +87,8 @@ standings(trn, "groups")
 ```
 
       stage_id rank participant wins draws losses points score_diff sos
-    1   groups    1       Bears    3     0      0      3          4   3
-    2   groups    2       Lions    2     0      1      2          1   4
+    1   groups    1       Lions    3     0      0      3          5   3
+    2   groups    2       Bears    2     0      1      2          0   4
     3   groups    3      Eagles    1     0      2      1         -2   5
     4   groups    4      Wolves    0     0      3      0         -3   6
       head_to_head
@@ -110,13 +110,45 @@ winner(trn)
 
     [1] "Lions"
 
-## Define any structure
+## Stage formats
 
-Stage types are the verbs. The `from =` argument defaults to the
+Stage types are the verbs. Chain them onto `tournament()` to describe
+any competition structure. The `from =` argument defaults to the
 previous stage, so linear chains need no wiring at all.
 
+### Round-robin
+
+Every participant plays every other participant. Standings accumulate
+points across all matches; `groups =` runs parallel group play within a
+single stage node.
+
+*Used in: Premier League, NBA regular season, FIFA World Cup group
+stage, Champions League league phase.*
+
 ``` r
-# Swiss → top 8 playoffs (common esports format)
+# World Cup style: 8 groups of 4, top 2 per group advance
+teams_32 <- paste("Nation", sprintf("%02d", 1:32))
+
+tournament(teams_32) |>
+  round_robin("groups", groups = 8) |>
+  single_elim("round_of_16", take = top_per_group(2))
+```
+
+    Tournament [2 stages]
+      groups       in_progress  0/48 matches
+      round_of_16  blocked      0/0 matches
+
+### Swiss system
+
+Participants are paired against others with the same current record
+across a fixed number of rounds. Nobody is eliminated during the stage —
+the final standings feed the next one.
+
+*Used in: chess olympiads, Magic: The Gathering GPs, Counter-Strike and
+VALORANT major group stages, Pokémon World Championships.*
+
+``` r
+# Open qualifier → top 2 into a playoff final
 tournament(teams) |>
   swiss("open", rounds = 3) |>
   single_elim("playoffs", take = top_n(2))
@@ -126,11 +158,17 @@ tournament(teams) |>
       open         in_progress  0/2 matches
       playoffs     blocked      0/0 matches
 
-When two stages read from the same source, name it explicitly with
-`from =`:
+### Single elimination
+
+One loss ends your tournament. The simplest bracket, and the most common
+knockout format. Use `from =` explicitly when two stages branch from the
+same source.
+
+*Used in: NCAA March Madness, Wimbledon, FIFA World Cup knockout rounds,
+NFL playoffs.*
 
 ``` r
-# Championship track + consolation bracket from the same group stage
+# Championship track and a consolation bracket from the same group stage
 tournament(teams) |>
   round_robin("groups") |>
   single_elim("championship", from = "groups", take = top_n(2)) |>
@@ -142,18 +180,43 @@ tournament(teams) |>
       championship blocked      0/0 matches
       consolation  blocked      0/0 matches
 
-``` r
-# World Cup: 8 groups of 4, top 2 from each group into the knockouts
-teams_32 <- paste("Nation", sprintf("%02d", 1:32))
+### Double elimination
 
-tournament(teams_32) |>
-  round_robin("groups", groups = 8) |>
-  single_elim("round_of_16", take = top_per_group(2))
+Two losses to be eliminated. Runs a winners bracket and a losers bracket
+in parallel — every entrant gets a second chance before they’re out.
+
+*Used in: StarCraft II WCS, VALORANT Champions, most fighting-game
+majors (EVO), Dota 2 The International.*
+
+``` r
+tournament(teams) |>
+  double_elim("bracket")
+```
+
+    Tournament [1 stage]
+      bracket      in_progress  0/6 matches
+
+### Two-leg knockout
+
+Each tie is played home and away; the aggregate score over both legs
+decides who advances. Supports `away_goals = TRUE` for the classic
+away-goals rule.
+
+*Used in: UEFA Champions League knockout rounds, Copa Libertadores,
+Europa League.*
+
+``` r
+# UCL style: 4 groups of 4, top 2 per group into two-leg knockouts
+teams_16 <- paste("Club", sprintf("%02d", 1:16))
+
+tournament(teams_16) |>
+  round_robin("groups", groups = 4) |>
+  two_leg("knockouts", take = top_per_group(2))
 ```
 
     Tournament [2 stages]
-      groups       in_progress  0/48 matches
-      round_of_16  blocked      0/0 matches
+      groups       in_progress  0/24 matches
+      knockouts    blocked      0/0 matches
 
 All routing selectors — `top_n`, `top_per_group`, `remaining`, `losers`,
 `slice_range`, `filter_by`, and their `_per_group` variants — sit in
@@ -218,9 +281,9 @@ routing_log(trn)
 ```
 
       source_stage_id         transition_id rule_applied     selected
-    1          groups groups_to_grand_final   top_n(n=2) Bears, Lions
+    1          groups groups_to_grand_final   top_n(n=2) Lions, Bears
       selected_count pool_before pool_after           timestamp
-    1              2           4          2 2026-02-19 13:15:52
+    1              2           4          2 2026-02-19 13:44:04
 
 ## Manual advance (opt-in)
 
