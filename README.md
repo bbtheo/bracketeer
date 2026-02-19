@@ -36,6 +36,11 @@ scoreboard.
 pak::pak("bbtheo/bracketeer")
 ```
 
+Or try it right now without installing anything — open the World Cup
+2026 simulation notebook in Google Colab:
+
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/bbtheo/bracketeer/blob/main/notebooks/world_cup_2026.ipynb)
+
 ## A complete tournament
 
 Four teams. A group stage, then a final for the top two. Definition to
@@ -82,10 +87,10 @@ standings(trn, "groups")
 ```
 
       stage_id rank participant wins draws losses points score_diff sos
-    1   groups    1      Wolves    3     0      0      3          3   3
-    2   groups    2       Bears    2     0      1      2          2   4
-    3   groups    3       Lions    1     0      2      1         -1   5
-    4   groups    4      Eagles    0     0      3      0         -4   6
+    1   groups    1       Bears    3     0      0      3          4   3
+    2   groups    2       Lions    2     0      1      2          1   4
+    3   groups    3      Eagles    1     0      2      1         -2   5
+    4   groups    4      Wolves    0     0      3      0         -3   6
       head_to_head
     1            0
     2            0
@@ -103,7 +108,7 @@ trn <- result(trn, "grand_final",
 winner(trn)
 ```
 
-    [1] "Bears"
+    [1] "Lions"
 
 ## Define any structure
 
@@ -212,10 +217,10 @@ stage_status(trn)
 routing_log(trn)
 ```
 
-      source_stage_id         transition_id rule_applied      selected
-    1          groups groups_to_grand_final   top_n(n=2) Wolves, Bears
+      source_stage_id         transition_id rule_applied     selected
+    1          groups groups_to_grand_final   top_n(n=2) Bears, Lions
       selected_count pool_before pool_after           timestamp
-    1              2           4          2 2026-02-19 11:39:45
+    1              2           4          2 2026-02-19 13:15:52
 
 ## Manual advance (opt-in)
 

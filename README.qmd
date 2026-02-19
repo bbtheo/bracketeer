@@ -34,6 +34,11 @@ The definition reads like a rulebook. The runtime feels like a scoreboard.
 pak::pak("bbtheo/bracketeer")
 ```
 
+Or try it right now without installing anything — open the World Cup 2026
+simulation notebook in Google Colab:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/bbtheo/bracketeer/blob/main/notebooks/world_cup_2026.ipynb)
+
 ## A complete tournament
 
 Four teams. A group stage, then a final for the top two. Definition to champion in one session.
@@ -83,37 +88,96 @@ trn <- result(trn, "grand_final",
 winner(trn)
 ```
 
-## Define any structure
+## Stage formats
 
-Stage types are the verbs. The `from =` argument defaults to the previous stage, so linear chains need no wiring at all.
+Stage types are the verbs. Chain them onto `tournament()` to describe any
+competition structure. The `from =` argument defaults to the previous stage,
+so linear chains need no wiring at all.
+
+### Round-robin
+
+Every participant plays every other participant. Standings accumulate points
+across all matches; `groups =` runs parallel group play within a single stage
+node.
+
+*Used in: Premier League, NBA regular season, FIFA World Cup group stage,
+Champions League league phase.*
+
+```{r}
+#| label: world-cup
+# World Cup style: 8 groups of 4, top 2 per group advance
+teams_32 <- paste("Nation", sprintf("%02d", 1:32))
+
+tournament(teams_32) |>
+  round_robin("groups", groups = 8) |>
+  single_elim("round_of_16", take = top_per_group(2))
+```
+
+### Swiss system
+
+Participants are paired against others with the same current record across a
+fixed number of rounds. Nobody is eliminated during the stage — the final
+standings feed the next one.
+
+*Used in: chess olympiads, Magic: The Gathering GPs, Counter-Strike and
+VALORANT major group stages, Pokémon World Championships.*
 
 ```{r}
 #| label: linear-chain
-# Swiss → top 8 playoffs (common esports format)
+# Open qualifier → top 2 into a playoff final
 tournament(teams) |>
   swiss("open", rounds = 3) |>
   single_elim("playoffs", take = top_n(2))
 ```
 
-When two stages read from the same source, name it explicitly with `from =`:
+### Single elimination
+
+One loss ends your tournament. The simplest bracket, and the most common
+knockout format. Use `from =` explicitly when two stages branch from the
+same source.
+
+*Used in: NCAA March Madness, Wimbledon, FIFA World Cup knockout rounds,
+NFL playoffs.*
 
 ```{r}
 #| label: branching
-# Championship track + consolation bracket from the same group stage
+# Championship track and a consolation bracket from the same group stage
 tournament(teams) |>
   round_robin("groups") |>
   single_elim("championship", from = "groups", take = top_n(2)) |>
   single_elim("consolation",  from = "groups", take = remaining())
 ```
 
-```{r}
-#| label: world-cup
-# World Cup: 8 groups of 4, top 2 from each group into the knockouts
-teams_32 <- paste("Nation", sprintf("%02d", 1:32))
+### Double elimination
 
-tournament(teams_32) |>
-  round_robin("groups", groups = 8) |>
-  single_elim("round_of_16", take = top_per_group(2))
+Two losses to be eliminated. Runs a winners bracket and a losers bracket in
+parallel — every entrant gets a second chance before they're out.
+
+*Used in: StarCraft II WCS, VALORANT Champions, most fighting-game majors
+(EVO), Dota 2 The International.*
+
+```{r}
+#| label: double-elim
+tournament(teams) |>
+  double_elim("bracket")
+```
+
+### Two-leg knockout
+
+Each tie is played home and away; the aggregate score over both legs decides
+who advances. Supports `away_goals = TRUE` for the classic away-goals rule.
+
+*Used in: UEFA Champions League knockout rounds, Copa Libertadores, Europa
+League.*
+
+```{r}
+#| label: two-leg
+# UCL style: 4 groups of 4, top 2 per group into two-leg knockouts
+teams_16 <- paste("Club", sprintf("%02d", 1:16))
+
+tournament(teams_16) |>
+  round_robin("groups", groups = 4) |>
+  two_leg("knockouts", take = top_per_group(2))
 ```
 
 All routing selectors — `top_n`, `top_per_group`, `remaining`, `losers`,
