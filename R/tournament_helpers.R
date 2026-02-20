@@ -12,6 +12,13 @@
 #'   tournament's `auto_advance` setting when present.
 #'
 #' @return Updated `tournament` object.
+#' @examples
+#' teams <- c("A", "B", "C", "D")
+#' trn <- tournament(teams) |>
+#'   round_robin("groups")
+#'
+#' # Enter a single result
+#' trn <- result(trn, "groups", match = 1, score = c(2, 1))
 #' @export
 result <- function(tournament, stage, match, score,
                    overwrite = FALSE, auto_advance = NULL) {
@@ -82,6 +89,17 @@ normalize_result_score <- function(score) {
 #'   defaults to the tournament's `auto_advance` setting when present.
 #'
 #' @return Updated `tournament` object.
+#' @examples
+#' teams <- c("A", "B", "C", "D")
+#' trn <- tournament(teams) |>
+#'   round_robin("groups")
+#'
+#' m <- matches(trn, "groups")
+#' trn <- results(trn, "groups", data.frame(
+#'   match  = m$match_id,
+#'   score1 = c(2, 1, 3),
+#'   score2 = c(1, 2, 0)
+#' ))
 #' @export
 results <- function(tournament, stage, df, overwrite = FALSE, auto_advance = NULL) {
     if (!inherits(tournament, "tournament")) {

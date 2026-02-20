@@ -8,6 +8,15 @@
 #'   tournament stage-verb dispatch methods.
 #'
 #' @return A round_robin_bracket object
+#' @examples
+#' # Simple round robin
+#' trn <- tournament(c("A", "B", "C", "D")) |>
+#'   round_robin("groups")
+#'
+#' # Multiple groups (World Cup style)
+#' teams <- paste("Team", sprintf("%02d", 1:32))
+#' trn <- tournament(teams) |>
+#'   round_robin("groups", groups = 8)
 #' @export
 round_robin <- function(participants, ...) {
     if (inherits(participants, "bracketeer_spec")) {
@@ -113,7 +122,13 @@ round_robin.default <- function(participants, home_away = FALSE, n_rounds = NULL
 
 #' Internal round-robin bracket constructor
 #'
-#' @inheritParams round_robin.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param home_away Whether to schedule home/away mirrored pairings.
+#' @param n_rounds Optional positive integer number of round-robin cycles.
+#' @param best_of Optional odd-integer series length specification.
+#' @param tiebreakers Optional ordered tiebreaker vector.
+#' @param groups Optional positive integer number of groups.
 #' @return A round_robin_bracket object.
 #' @keywords internal
 new_round_robin_bracket <- function(participants, home_away = FALSE, n_rounds = NULL,

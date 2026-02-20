@@ -22,3 +22,13 @@ Data frame of matches.
 \description{
 Inspect tournament matches
 }
+\examples{
+trn <- tournament(c("A", "B", "C", "D")) |>
+  round_robin("groups")
+
+# Get pending matches
+matches(trn, "groups")
+
+# Get all matches across stages
+matches(trn, status = "all")
+}

@@ -12,6 +12,18 @@ new_two_leg_bracket(
   reseed = FALSE
 )
 }
+\arguments{
+\item{participants}{Character vector of participant names, or a data.frame
+with a \code{name} column and optional \code{seed} column.}
+
+\item{seed}{Seeding policy forwarded to internal seeding helpers.}
+
+\item{third_place}{Whether to include a third-place match.}
+
+\item{away_goals}{Whether away goals break aggregate-score ties.}
+
+\item{reseed}{Whether to reseed participants between rounds.}
+}
 \value{
 A two_leg_knockout object.
 }

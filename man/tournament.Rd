@@ -19,3 +19,14 @@ A tournament runtime object with no stages materialized yet.
 \description{
 Create an empty live tournament pipeline
 }
+\examples{
+# Simple tournament with auto-advance
+teams <- c("Lions", "Bears", "Eagles", "Wolves")
+trn <- tournament(teams) |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(2))
+
+# Manual advance mode
+trn_manual <- tournament(teams, auto_advance = FALSE) |>
+  swiss("open", rounds = 3)
+}

@@ -58,6 +58,11 @@ all_selector <- function() {
 #' @param n Positive integer count.
 #'
 #' @return A `bracketeer_selector` object.
+#' @examples
+#' # Route top 4 to playoffs
+#' trn <- tournament(paste("Team", LETTERS[1:8])) |>
+#'   swiss("open", rounds = 3) |>
+#'   single_elim("playoffs", take = top_n(4))
 #' @export
 top_n <- function(n) {
     n <- validate_selector_count(n, arg = "n")
@@ -186,6 +191,12 @@ filter_by <- function(fn) {
 #' @param n Positive integer count per group.
 #'
 #' @return A `bracketeer_selector` object.
+#' @examples
+#' # World Cup style: 8 groups, top 2 per group advance
+#' teams <- paste("Team", sprintf("%02d", 1:32))
+#' trn <- tournament(teams) |>
+#'   round_robin("groups", groups = 8) |>
+#'   single_elim("knockout", take = top_per_group(2))
 #' @export
 top_per_group <- function(n) {
     n <- validate_selector_count(n, arg = "n")

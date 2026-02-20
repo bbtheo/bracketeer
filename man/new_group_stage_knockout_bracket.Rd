@@ -19,6 +19,32 @@ new_group_stage_knockout_bracket(
   knockout_best_of = NULL
 )
 }
+\arguments{
+\item{participants}{Character vector of participant names, or a data.frame
+with a \code{name} column and optional \code{seed} column.}
+
+\item{groups}{Number of groups to create.}
+
+\item{advance_per_group}{Number of participants advancing from each group.}
+
+\item{seed}{Seeding policy for initial participant allocation.}
+
+\item{group_home_away}{Whether group matches are home/away double round robin.}
+
+\item{group_best_of}{Optional odd-integer series length for group matches.}
+
+\item{group_tiebreakers}{Optional ordered tiebreaker vector for groups.}
+
+\item{knockout_type}{Knockout format: \code{"single_elim"} or \code{"double_elim"}.}
+
+\item{knockout_seed}{Seeding policy for knockout-stage placement.}
+
+\item{third_place}{Whether to include a third-place match in single elimination.}
+
+\item{grand_final_reset}{Whether double-elim knockout can trigger a reset final.}
+
+\item{knockout_best_of}{Optional odd-integer series length for knockout matches.}
+}
 \value{
 A group_stage_knockout object.
 }

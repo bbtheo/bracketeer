@@ -15,3 +15,9 @@ A \code{bracketeer_selector} object.
 \description{
 Select top ranked participants from source standings
 }
+\examples{
+# Route top 4 to playoffs
+trn <- tournament(paste("Team", LETTERS[1:8])) |>
+  swiss("open", rounds = 3) |>
+  single_elim("playoffs", take = top_n(4))
+}

@@ -17,3 +17,11 @@ A preflight validation summary.
 \description{
 Validate a tournament spec preflight
 }
+\examples{
+my_spec <- spec() |>
+  round_robin("groups", groups = 4) |>
+  single_elim("knockout", take = top_per_group(2))
+
+# Check if 16 participants can work
+validate(my_spec, n = 16)
+}

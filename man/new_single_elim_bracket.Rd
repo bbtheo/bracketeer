@@ -12,6 +12,18 @@ new_single_elim_bracket(
   reseed = FALSE
 )
 }
+\arguments{
+\item{participants}{Character vector of participant names, or a data.frame
+with a \code{name} column and optional \code{seed} column.}
+
+\item{seed}{Seeding policy forwarded to internal seeding helpers.}
+
+\item{third_place}{Whether to include a third-place match.}
+
+\item{best_of}{Optional odd-integer series length specification.}
+
+\item{reseed}{Whether to reseed participants between rounds.}
+}
 \value{
 A single_elim_bracket object.
 }

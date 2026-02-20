@@ -17,3 +17,10 @@ A bracket, spec, or tournament depending on \code{participants}.
 \description{
 Alias for \code{two_leg_knockout()} used by the tournament stage-verb API.
 }
+\examples{
+# Two-leg knockout (Champions League style)
+teams <- paste("Club", sprintf("\%02d", 1:16))
+trn <- tournament(teams) |>
+  round_robin("groups", groups = 4) |>
+  two_leg("knockouts", take = top_per_group(2))
+}

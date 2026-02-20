@@ -8,6 +8,12 @@
 #'   tournament stage-verb dispatch methods.
 #'
 #' @return A swiss_bracket object
+#' @examples
+#' # Swiss system followed by top-cut playoffs
+#' teams <- paste("Team", LETTERS[1:16])
+#' trn <- tournament(teams) |>
+#'   swiss("open", rounds = 5) |>
+#'   single_elim("playoffs", take = top_n(8))
 #' @export
 swiss <- function(participants, ...) {
     if (inherits(participants, "bracketeer_spec")) {
@@ -59,7 +65,14 @@ swiss.default <- function(participants, rounds = NULL, seed = TRUE,
 
 #' Internal swiss bracket constructor
 #'
-#' @inheritParams swiss.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param rounds Optional positive integer number of Swiss rounds.
+#' @param seed Seeding policy for initial ordering.
+#' @param allow_ties Whether drawn results are allowed.
+#' @param bye_points Points awarded for a bye.
+#' @param best_of Optional odd-integer series length specification.
+#' @param tiebreakers Optional ordered tiebreaker vector.
 #' @return A swiss_bracket object.
 #' @keywords internal
 new_swiss_bracket <- function(participants, rounds = NULL, seed = TRUE,
@@ -197,7 +210,8 @@ set_result.swiss_bracket <- function(bracket, match_id, score1, score2,
 
 #' @rdname advance
 #' @export
-advance.swiss_bracket <- function(bracket, stage_id = NULL) {
+advance.swiss_bracket <- function(x, stage = NULL, ...) {
+    bracket <- x
     current_round <- bracket$current_round
     if (current_round >= bracket$rounds) return(bracket)
 

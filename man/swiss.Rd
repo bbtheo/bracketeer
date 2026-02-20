@@ -19,3 +19,10 @@ A swiss_bracket object
 \description{
 Swiss system pairs participants by similar records each round.
 }
+\examples{
+# Swiss system followed by top-cut playoffs
+teams <- paste("Team", LETTERS[1:16])
+trn <- tournament(teams) |>
+  swiss("open", rounds = 5) |>
+  single_elim("playoffs", take = top_n(8))
+}

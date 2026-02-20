@@ -1,10 +1,9 @@
 #' Print bracketeer objects
 #'
+#' @name print
 #' @param x A bracket or match object.
 #' @param ... Additional arguments (unused).
 #' @return The object, invisibly.
-#' @export
-#' @rdname print
 NULL
 
 #' @rdname print
@@ -147,11 +146,10 @@ print.tournament <- function(x, ...) {
 
 #' Summarize bracketeer objects
 #'
+#' @name summary
 #' @param object A bracket object.
 #' @param ... Additional arguments (unused).
 #' @return The object, invisibly.
-#' @export
-#' @rdname summary
 NULL
 
 #' @rdname summary

@@ -119,7 +119,19 @@ group_stage_knockout.default <- function(participants,
 
 #' Internal group-stage-knockout bracket constructor
 #'
-#' @inheritParams group_stage_knockout.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param groups Number of groups to create.
+#' @param advance_per_group Number of participants advancing from each group.
+#' @param seed Seeding policy for initial participant allocation.
+#' @param group_home_away Whether group matches are home/away double round robin.
+#' @param group_best_of Optional odd-integer series length for group matches.
+#' @param group_tiebreakers Optional ordered tiebreaker vector for groups.
+#' @param knockout_type Knockout format: `"single_elim"` or `"double_elim"`.
+#' @param knockout_seed Seeding policy for knockout-stage placement.
+#' @param third_place Whether to include a third-place match in single elimination.
+#' @param grand_final_reset Whether double-elim knockout can trigger a reset final.
+#' @param knockout_best_of Optional odd-integer series length for knockout matches.
 #' @return A group_stage_knockout object.
 #' @keywords internal
 new_group_stage_knockout_bracket <- function(participants,
@@ -383,7 +395,8 @@ get_standings.group_stage_knockout <- function(bracket) {
 
 #' @rdname advance
 #' @export
-advance.group_stage_knockout <- function(bracket, stage_id = NULL) {
+advance.group_stage_knockout <- function(x, stage = NULL, ...) {
+    bracket <- x
     if (bracket$phase == "groups") {
         # Check all groups complete
         for (label in names(bracket$group_brackets)) {

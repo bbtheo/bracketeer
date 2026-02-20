@@ -15,13 +15,13 @@ advance(x, stage = NULL, ...)
 
 \method{advance}{bracket}(x, stage = NULL, ...)
 
-\method{advance}{double_elim_bracket}(bracket, stage_id = NULL)
+\method{advance}{double_elim_bracket}(x, stage = NULL, ...)
 
-\method{advance}{group_stage_knockout}(bracket, stage_id = NULL)
+\method{advance}{group_stage_knockout}(x, stage = NULL, ...)
 
-\method{advance}{single_elim_bracket}(bracket, stage_id = NULL)
+\method{advance}{single_elim_bracket}(x, stage = NULL, ...)
 
-\method{advance}{swiss_bracket}(bracket, stage_id = NULL)
+\method{advance}{swiss_bracket}(x, stage = NULL, ...)
 
 \method{advance}{tournament}(x, stage = NULL, ...)
 }

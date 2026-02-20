@@ -15,3 +15,14 @@ Winner name or \code{NA_character_}.
 \description{
 Get tournament winner
 }
+\examples{
+teams <- c("A", "B", "C", "D")
+trn <- tournament(teams) |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(2))
+
+# ... enter all results ...
+
+# Get the champion
+winner(trn)
+}

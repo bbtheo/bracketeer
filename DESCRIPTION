@@ -2,7 +2,10 @@ Package: bracketeer
 Title: Tournament Generator
 Version: 0.1.0.9000
 Authors@R:
-    person("Theo", "Blauberg", email = "theo.blauberg@outlook.com", role = c("aut", "cre"))
+    person("Theo", "Blauberg", 
+    email = "theo.blauberg@outlook.com", 
+    role = c("aut", "cre", "cph"),
+    comment = c(ORCID = "0000-0003-1780-0365"))
 Description: Create and manage tournament brackets for various competition formats
     including single elimination, double elimination, round robin, Swiss system,
     and group-stage-to-knockout tournaments. Provides tools for seeding,
@@ -10,7 +13,7 @@ Description: Create and manage tournament brackets for various competition forma
 URL: https://github.com/bbtheo/bracketeer,
     https://bbtheo.github.io/bracketeer/
 BugReports: https://github.com/bbtheo/bracketeer/issues
-License: MIT 
+License: MIT + file LICENSE 
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

@@ -27,3 +27,11 @@ Updated \code{tournament} object.
 \description{
 Convenience wrapper around \code{set_result()} for tournament workflows.
 }
+\examples{
+teams <- c("A", "B", "C", "D")
+trn <- tournament(teams) |>
+  round_robin("groups")
+
+# Enter a single result
+trn <- result(trn, "groups", match = 1, score = c(2, 1))
+}

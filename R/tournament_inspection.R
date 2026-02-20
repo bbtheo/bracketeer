@@ -5,6 +5,15 @@
 #' @param status One of `"pending"`, `"complete"`, or `"all"`.
 #'
 #' @return Data frame of matches.
+#' @examples
+#' trn <- tournament(c("A", "B", "C", "D")) |>
+#'   round_robin("groups")
+#'
+#' # Get pending matches
+#' matches(trn, "groups")
+#'
+#' # Get all matches across stages
+#' matches(trn, status = "all")
 #' @export
 matches <- function(x, stage = NULL, status = "pending") {
     UseMethod("matches")
@@ -64,6 +73,16 @@ matches.tournament <- function(x, stage = NULL, status = "pending") {
 #' @param stage Optional stage identifier.
 #'
 #' @return Data frame of standings.
+#' @examples
+#' trn <- tournament(c("A", "B", "C", "D")) |>
+#'   round_robin("groups")
+#'
+#' # Enter some results
+#' m <- matches(trn, "groups")
+#' trn <- result(trn, "groups", m$match_id[1], score = c(2, 1))
+#'
+#' # View current standings
+#' standings(trn, "groups")
 #' @export
 standings <- function(x, stage = NULL) {
     UseMethod("standings")
@@ -164,6 +183,16 @@ stage_status <- function(tournament) {
 #' @param tournament A `tournament` object.
 #'
 #' @return Winner name or `NA_character_`.
+#' @examples
+#' teams <- c("A", "B", "C", "D")
+#' trn <- tournament(teams) |>
+#'   round_robin("groups") |>
+#'   single_elim("finals", take = top_n(2))
+#'
+#' # ... enter all results ...
+#'
+#' # Get the champion
+#' winner(trn)
 #' @export
 winner <- function(tournament) {
     if (!inherits(tournament, "tournament")) {

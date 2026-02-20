@@ -45,7 +45,12 @@ two_leg_knockout.default <- function(participants, seed = TRUE,
 
 #' Internal two-leg bracket constructor
 #'
-#' @inheritParams two_leg_knockout.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param seed Seeding policy forwarded to internal seeding helpers.
+#' @param third_place Whether to include a third-place match.
+#' @param away_goals Whether away goals break aggregate-score ties.
+#' @param reseed Whether to reseed participants between rounds.
 #' @return A two_leg_knockout object.
 #' @keywords internal
 new_two_leg_bracket <- function(participants, seed = TRUE,

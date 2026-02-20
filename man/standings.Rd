@@ -20,3 +20,14 @@ Data frame of standings.
 \description{
 Inspect tournament standings
 }
+\examples{
+trn <- tournament(c("A", "B", "C", "D")) |>
+  round_robin("groups")
+
+# Enter some results
+m <- matches(trn, "groups")
+trn <- result(trn, "groups", m$match_id[1], score = c(2, 1))
+
+# View current standings
+standings(trn, "groups")
+}

@@ -20,3 +20,13 @@ A single_elim_bracket object
 Single elimination (knockout) tournament where losing a match eliminates
 the participant from the tournament.
 }
+\examples{
+# Simple knockout bracket
+trn <- tournament(paste("Team", LETTERS[1:8])) |>
+  single_elim("bracket")
+
+# Chain after group stage
+trn <- tournament(c("A", "B", "C", "D")) |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(2))
+}

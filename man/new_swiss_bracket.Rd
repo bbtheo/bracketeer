@@ -14,6 +14,22 @@ new_swiss_bracket(
   tiebreakers = NULL
 )
 }
+\arguments{
+\item{participants}{Character vector of participant names, or a data.frame
+with a \code{name} column and optional \code{seed} column.}
+
+\item{rounds}{Optional positive integer number of Swiss rounds.}
+
+\item{seed}{Seeding policy for initial ordering.}
+
+\item{allow_ties}{Whether drawn results are allowed.}
+
+\item{bye_points}{Points awarded for a bye.}
+
+\item{best_of}{Optional odd-integer series length specification.}
+
+\item{tiebreakers}{Optional ordered tiebreaker vector.}
+}
 \value{
 A swiss_bracket object.
 }

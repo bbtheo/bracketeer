@@ -13,6 +13,20 @@ new_round_robin_bracket(
   groups = NULL
 )
 }
+\arguments{
+\item{participants}{Character vector of participant names, or a data.frame
+with a \code{name} column and optional \code{seed} column.}
+
+\item{home_away}{Whether to schedule home/away mirrored pairings.}
+
+\item{n_rounds}{Optional positive integer number of round-robin cycles.}
+
+\item{best_of}{Optional odd-integer series length specification.}
+
+\item{tiebreakers}{Optional ordered tiebreaker vector.}
+
+\item{groups}{Optional positive integer number of groups.}
+}
 \value{
 A round_robin_bracket object.
 }

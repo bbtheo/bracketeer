@@ -9,6 +9,15 @@
 #'   tournament stage-verb dispatch methods.
 #'
 #' @return A single_elim_bracket object
+#' @examples
+#' # Simple knockout bracket
+#' trn <- tournament(paste("Team", LETTERS[1:8])) |>
+#'   single_elim("bracket")
+#'
+#' # Chain after group stage
+#' trn <- tournament(c("A", "B", "C", "D")) |>
+#'   round_robin("groups") |>
+#'   single_elim("finals", take = top_n(2))
 #' @export
 single_elim <- function(participants, ...) {
     if (inherits(participants, "bracketeer_spec")) {
@@ -137,7 +146,12 @@ single_elim.default <- function(participants, seed = TRUE, third_place = FALSE,
 
 #' Internal single-elimination bracket constructor
 #'
-#' @inheritParams single_elim.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param seed Seeding policy forwarded to internal seeding helpers.
+#' @param third_place Whether to include a third-place match.
+#' @param best_of Optional odd-integer series length specification.
+#' @param reseed Whether to reseed participants between rounds.
 #' @return A single_elim_bracket object.
 #' @keywords internal
 new_single_elim_bracket <- function(participants, seed = TRUE, third_place = FALSE,
@@ -317,7 +331,8 @@ advance_winner.single_elim_bracket <- function(bracket, match_id) {
 
 #' @rdname advance
 #' @export
-advance.single_elim_bracket <- function(bracket, stage_id = NULL) {
+advance.single_elim_bracket <- function(x, stage = NULL, ...) {
+    bracket <- x
     if (!isTRUE(bracket$reseed)) {
         if (!is.null(bracket$current_round) && bracket$current_round < bracket$rounds) {
             bracket$current_round <- bracket$current_round + 1L

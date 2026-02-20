@@ -4,4 +4,8 @@
 ^pkgdown$
 ^\.github$
 ^\.claude$
-^\scratchpad$
+^scratchpad$
+^cran-comments\.md$
+^AGENTS\.md$
+^README\.qmd$
+^notebooks$

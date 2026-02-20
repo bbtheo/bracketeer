@@ -24,3 +24,15 @@ Updated \code{tournament} object.
 \description{
 Convenience wrapper for entering multiple match results for one stage.
 }
+\examples{
+teams <- c("A", "B", "C", "D")
+trn <- tournament(teams) |>
+  round_robin("groups")
+
+m <- matches(trn, "groups")
+trn <- results(trn, "groups", data.frame(
+  match  = m$match_id,
+  score1 = c(2, 1, 3),
+  score2 = c(1, 2, 0)
+))
+}

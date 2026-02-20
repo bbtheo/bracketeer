@@ -353,6 +353,18 @@ from_previous <- function() {
 #' Alias for `from_previous()` used by the rewritten stage-verb API.
 #'
 #' @return Sentinel object to be resolved by transition wiring.
+#' @examples
+#' teams <- paste("Team", LETTERS[1:8])
+#'
+#' # Implicit: defaults to previous_stage()
+#' trn <- tournament(teams) |>
+#'   swiss("open", rounds = 3) |>
+#'   single_elim("playoffs", take = top_n(4))
+#'
+#' # Explicit: useful for branching
+#' trn <- tournament(teams) |>
+#'   round_robin("groups") |>
+#'   single_elim("finals", from = previous_stage(), take = top_n(2))
 #' @export
 previous_stage <- function() {
     from_previous()

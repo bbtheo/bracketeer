@@ -8,6 +8,15 @@
 #'   tournament stage-verb dispatch methods.
 #'
 #' @return A double_elim_bracket object
+#' @examples
+#' # Double elimination bracket (two losses to be eliminated)
+#' trn <- tournament(paste("Team", LETTERS[1:8])) |>
+#'   double_elim("bracket")
+#'
+#' # After Swiss rounds
+#' trn <- tournament(paste("Team", LETTERS[1:16])) |>
+#'   swiss("open", rounds = 4) |>
+#'   double_elim("playoffs", take = top_n(8))
 #' @export
 double_elim <- function(participants, ...) {
     if (inherits(participants, "bracketeer_spec")) {
@@ -202,7 +211,12 @@ double_elim.default <- function(participants, seed = TRUE,
 
 #' Internal double-elimination bracket constructor
 #'
-#' @inheritParams double_elim.default
+#' @param participants Character vector of participant names, or a data.frame
+#'   with a `name` column and optional `seed` column.
+#' @param seed Seeding policy forwarded to internal seeding helpers.
+#' @param grand_final_reset Whether to schedule a potential reset grand final.
+#' @param best_of Optional odd-integer series length specification.
+#' @param reseed Whether to reseed winners-bracket participants between rounds.
 #' @return A double_elim_bracket object.
 #' @keywords internal
 new_double_elim_bracket <- function(participants, seed = TRUE,
@@ -454,7 +468,8 @@ is_complete.double_elim_bracket <- function(bracket) {
 
 #' @rdname advance
 #' @export
-advance.double_elim_bracket <- function(bracket, stage_id = NULL) {
+advance.double_elim_bracket <- function(x, stage = NULL, ...) {
+    bracket <- x
     if (!isTRUE(bracket$reseed_winners)) return(bracket)
 
     current_round <- bracket$current_winners_round
