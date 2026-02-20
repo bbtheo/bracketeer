@@ -66,6 +66,28 @@
     <p>A preflight validation summary.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">my_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="spec.html">spec</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span>, groups <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"knockout"</span>, take <span class="op">=</span> <span class="fu"><a href="top_per_group.html">top_per_group</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Check if 16 participants can work</span></span></span>
+<span class="r-in"><span><span class="fu">validate</span><span class="op">(</span><span class="va">my_spec</span>, n <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $n_participants</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $stage_counts</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   groups knockout </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       16        8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "tournament_validation"</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

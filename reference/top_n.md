@@ -17,3 +17,12 @@ top_n(n)
 ## Value
 
 A `bracketeer_selector` object.
+
+## Examples
+
+``` r
+# Route top 4 to playoffs
+trn <- tournament(paste("Team", LETTERS[1:8])) |>
+  swiss("open", rounds = 3) |>
+  single_elim("playoffs", take = top_n(4))
+```

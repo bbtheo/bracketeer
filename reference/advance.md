@@ -11,16 +11,16 @@ advance(x, stage = NULL, ...)
 advance(x, stage = NULL, ...)
 
 # S3 method for class 'double_elim_bracket'
-advance(bracket, stage_id = NULL)
+advance(x, stage = NULL, ...)
 
 # S3 method for class 'group_stage_knockout'
-advance(bracket, stage_id = NULL)
+advance(x, stage = NULL, ...)
 
 # S3 method for class 'single_elim_bracket'
-advance(bracket, stage_id = NULL)
+advance(x, stage = NULL, ...)
 
 # S3 method for class 'swiss_bracket'
-advance(bracket, stage_id = NULL)
+advance(x, stage = NULL, ...)
 
 # S3 method for class 'tournament'
 advance(x, stage = NULL, ...)

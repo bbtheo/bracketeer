@@ -70,6 +70,13 @@
 - [`previous_stage()`](https://bbtheo.github.io/bracketeer/reference/previous_stage.md)
   : Resolve source stage from the immediately preceding stage
 
+- [`print(`*`<group_stage_knockout>`*`)`](https://bbtheo.github.io/bracketeer/reference/print.md)
+  [`print(`*`<bracket_match>`*`)`](https://bbtheo.github.io/bracketeer/reference/print.md)
+  [`print(`*`<bracket>`*`)`](https://bbtheo.github.io/bracketeer/reference/print.md)
+  [`print(`*`<double_elim_bracket>`*`)`](https://bbtheo.github.io/bracketeer/reference/print.md)
+  [`print(`*`<tournament>`*`)`](https://bbtheo.github.io/bracketeer/reference/print.md)
+  : Print bracketeer objects
+
 - [`qualify_losers()`](https://bbtheo.github.io/bracketeer/reference/qualify_losers.md)
   : Select losers from a source stage by elimination round
 
@@ -125,6 +132,9 @@
 
 - [`standings()`](https://bbtheo.github.io/bracketeer/reference/standings.md)
   : Inspect tournament standings
+
+- [`summary(`*`<bracket>`*`)`](https://bbtheo.github.io/bracketeer/reference/summary.md)
+  : Summarize bracketeer objects
 
 - [`swiss()`](https://bbtheo.github.io/bracketeer/reference/swiss.md) :
   Create a Swiss-system tournament

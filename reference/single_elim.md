@@ -24,3 +24,16 @@ single_elim(participants, ...)
 ## Value
 
 A single_elim_bracket object
+
+## Examples
+
+``` r
+# Simple knockout bracket
+trn <- tournament(paste("Team", LETTERS[1:8])) |>
+  single_elim("bracket")
+
+# Chain after group stage
+trn <- tournament(c("A", "B", "C", "D")) |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(2))
+```

@@ -23,3 +23,17 @@ tournament(participants, auto_advance = TRUE)
 ## Value
 
 A tournament runtime object with no stages materialized yet.
+
+## Examples
+
+``` r
+# Simple tournament with auto-advance
+teams <- c("Lions", "Bears", "Eagles", "Wolves")
+trn <- tournament(teams) |>
+  round_robin("groups") |>
+  single_elim("finals", take = top_n(2))
+
+# Manual advance mode
+trn_manual <- tournament(teams, auto_advance = FALSE) |>
+  swiss("open", rounds = 3)
+```

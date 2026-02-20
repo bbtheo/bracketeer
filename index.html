@@ -85,7 +85,11 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p>Install from CRAN:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"bracketeer"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the development version from GitHub:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"bbtheo/bracketeer"</span><span class="op">)</span></span></code></pre></div>
 <p>Or try it right now without installing anything — open the World Cup 2026 simulation notebook in Google Colab:</p>
@@ -95,7 +99,7 @@
 <h2 id="a-complete-tournament">A complete tournament<a class="anchor" aria-label="anchor" href="#a-complete-tournament"></a>
 </h2>
 <p>Four teams. A group stage, then a final for the top two. Definition to champion in one session.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">teams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lions"</span>, <span class="st">"Bears"</span>, <span class="st">"Eagles"</span>, <span class="st">"Wolves"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -103,11 +107,11 @@
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"grand_final"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trn</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  grand_final  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  grand_final  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 <p><code>groups</code> opens immediately. <code>grand_final</code> is blocked until two teams qualify. Use <code><a href="reference/matches.html">matches()</a></code> to get the schedule:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/matches.html">matches</a></span><span class="op">(</span><span class="va">trn</span>, <span class="st">"groups"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/results.html">results</a></span><span class="op">(</span><span class="va">trn</span>, <span class="st">"groups"</span>, <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -117,23 +121,23 @@
 <span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trn</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  groups       complete     <span class="dv">6</span><span class="sc">/</span><span class="dv">6</span> matches</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  grand_final  in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">1</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  groups       complete     <span class="dv">6</span><span class="sc">/</span><span class="dv">6</span> matches</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  grand_final  in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">1</span> matches</span></code></pre></div>
 <p>When the last group result lands, <code>grand_final</code> materializes automatically. No explicit advance call needed.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/standings.html">standings</a></span><span class="op">(</span><span class="va">trn</span>, <span class="st">"groups"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>  stage_id rank participant wins draws losses points score_diff sos</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="dv">1</span>   groups    <span class="dv">1</span>       Lions    <span class="dv">3</span>     <span class="dv">0</span>      <span class="dv">0</span>      <span class="dv">3</span>          <span class="dv">5</span>   <span class="dv">3</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="dv">2</span>   groups    <span class="dv">2</span>       Bears    <span class="dv">2</span>     <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">2</span>          <span class="dv">0</span>   <span class="dv">4</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="dv">3</span>   groups    <span class="dv">3</span>      Eagles    <span class="dv">1</span>     <span class="dv">0</span>      <span class="dv">2</span>      <span class="dv">1</span>         <span class="sc">-</span><span class="dv">2</span>   <span class="dv">5</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="dv">4</span>   groups    <span class="dv">4</span>      Wolves    <span class="dv">0</span>     <span class="dv">0</span>      <span class="dv">3</span>      <span class="dv">0</span>         <span class="sc">-</span><span class="dv">3</span>   <span class="dv">6</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  head_to_head</span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="dv">1</span>            <span class="dv">0</span></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="dv">2</span>            <span class="dv">0</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="dv">3</span>            <span class="dv">0</span></span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="dv">4</span>            <span class="dv">0</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>  stage_id rank participant wins draws losses points score_diff sos</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="dv">1</span>   groups    <span class="dv">1</span>      Wolves    <span class="dv">2</span>     <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">2</span>          <span class="dv">1</span>   <span class="dv">4</span></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="dv">2</span>   groups    <span class="dv">2</span>      Eagles    <span class="dv">2</span>     <span class="dv">0</span>      <span class="dv">1</span>      <span class="dv">2</span>          <span class="dv">2</span>   <span class="dv">4</span></span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="dv">3</span>   groups    <span class="dv">3</span>       Lions    <span class="dv">1</span>     <span class="dv">0</span>      <span class="dv">2</span>      <span class="dv">1</span>         <span class="sc">-</span><span class="dv">1</span>   <span class="dv">5</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="dv">4</span>   groups    <span class="dv">4</span>       Bears    <span class="dv">1</span>     <span class="dv">0</span>      <span class="dv">2</span>      <span class="dv">1</span>         <span class="sc">-</span><span class="dv">2</span>   <span class="dv">5</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  head_to_head</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="dv">1</span>            <span class="dv">1</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="dv">2</span>            <span class="dv">0</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="dv">3</span>            <span class="dv">1</span></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="dv">4</span>            <span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/matches.html">matches</a></span><span class="op">(</span><span class="va">trn</span>, <span class="st">"grand_final"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">trn</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/result.html">result</a></span><span class="op">(</span><span class="va">trn</span>, <span class="st">"grand_final"</span>,</span>
@@ -142,7 +146,7 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/winner.html">winner</a></span><span class="op">(</span><span class="va">trn</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Lions"</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Eagles"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="stage-formats">Stage formats<a class="anchor" aria-label="anchor" href="#stage-formats"></a>
@@ -153,73 +157,73 @@
 </h3>
 <p>Every participant plays every other participant. Standings accumulate points across all matches; <code>groups =</code> runs parallel group play within a single stage node.</p>
 <p><em>Used in: Premier League, NBA regular season, FIFA World Cup group stage, Champions League league phase.</em></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># World Cup style: 8 groups of 4, top 2 per group advance</span></span>
 <span><span class="va">teams_32</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Nation"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">32</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams_32</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span>, groups <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"round_of_16"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_per_group.html">top_per_group</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">48</span> matches</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  round_of_16  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">48</span> matches</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  round_of_16  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="swiss-system">Swiss system<a class="anchor" aria-label="anchor" href="#swiss-system"></a>
 </h3>
 <p>Participants are paired against others with the same current record across a fixed number of rounds. Nobody is eliminated during the stage — the final standings feed the next one.</p>
 <p><em>Used in: chess olympiads, Magic: The Gathering GPs, Counter-Strike and VALORANT major group stages, Pokémon World Championships.</em></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Open qualifier → top 2 into a playoff final</span></span>
 <span><span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/swiss.html">swiss</a></span><span class="op">(</span><span class="st">"open"</span>, rounds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"playoffs"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  open         in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">2</span> matches</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  playoffs     blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  open         in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">2</span> matches</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  playoffs     blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="single-elimination">Single elimination<a class="anchor" aria-label="anchor" href="#single-elimination"></a>
 </h3>
 <p>One loss ends your tournament. The simplest bracket, and the most common knockout format. Use <code>from =</code> explicitly when two stages branch from the same source.</p>
 <p><em>Used in: NCAA March Madness, Wimbledon, FIFA World Cup knockout rounds, NFL playoffs.</em></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Championship track and a consolation bracket from the same group stage</span></span>
 <span><span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"championship"</span>, from <span class="op">=</span> <span class="st">"groups"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"consolation"</span>,  from <span class="op">=</span> <span class="st">"groups"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/remaining.html">remaining</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>Tournament [<span class="dv">3</span> stages]</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  championship blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  consolation  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>Tournament [<span class="dv">3</span> stages]</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  championship blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  consolation  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="double-elimination">Double elimination<a class="anchor" aria-label="anchor" href="#double-elimination"></a>
 </h3>
 <p>Two losses to be eliminated. Runs a winners bracket and a losers bracket in parallel — every entrant gets a second chance before they’re out.</p>
 <p><em>Used in: StarCraft II WCS, VALORANT Champions, most fighting-game majors (EVO), Dota 2 The International.</em></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/double_elim.html">double_elim</a></span><span class="op">(</span><span class="st">"bracket"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>Tournament [<span class="dv">1</span> stage]</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  bracket      in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>Tournament [<span class="dv">1</span> stage]</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  bracket      in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="two-leg-knockout">Two-leg knockout<a class="anchor" aria-label="anchor" href="#two-leg-knockout"></a>
 </h3>
 <p>Each tie is played home and away; the aggregate score over both legs decides who advances. Supports <code>away_goals = TRUE</code> for the classic away-goals rule.</p>
 <p><em>Used in: UEFA Champions League knockout rounds, Copa Libertadores, Europa League.</em></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># UCL style: 4 groups of 4, top 2 per group into two-leg knockouts</span></span>
 <span><span class="va">teams_16</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Club"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">16</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams_16</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span>, groups <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/two_leg.html">two_leg</a></span><span class="op">(</span><span class="st">"knockouts"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_per_group.html">top_per_group</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
-<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">24</span> matches</span>
-<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  knockouts    blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>Tournament [<span class="dv">2</span> stages]</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">24</span> matches</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  knockouts    blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 <p>All routing selectors — <code>top_n</code>, <code>top_per_group</code>, <code>remaining</code>, <code>losers</code>, <code>slice_range</code>, <code>filter_by</code>, and their <code>_per_group</code> variants — sit in <code>take =</code> and evaluate against the source stage’s standings at transition time.</p>
 </div>
 </div>
@@ -227,25 +231,25 @@
 <h2 id="the-spec-path">The spec path<a class="anchor" aria-label="anchor" href="#the-spec-path"></a>
 </h2>
 <p>Define a blueprint without participants, validate it, then reuse it across different fields:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/spec.html">spec</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"finals"</span>,      from <span class="op">=</span> <span class="st">"groups"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"consolation"</span>, from <span class="op">=</span> <span class="st">"groups"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/remaining.html">remaining</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/validate.html">validate</a></span><span class="op">(</span><span class="va">my_spec</span>, n <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>   <span class="co"># errors loudly if routing is infeasible</span></span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trn2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/build.html">build</a></span><span class="op">(</span><span class="va">my_spec</span>, <span class="va">teams</span><span class="op">)</span></span>
 <span><span class="va">trn2</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>Tournament [<span class="dv">3</span> stages]</span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  finals       blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  consolation  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>Tournament [<span class="dv">3</span> stages]</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  groups       in_progress  <span class="dv">0</span><span class="sc">/</span><span class="dv">6</span> matches</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  finals       blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  consolation  blocked      <span class="dv">0</span><span class="sc">/</span><span class="dv">0</span> matches</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="entering-results">Entering results<a class="anchor" aria-label="anchor" href="#entering-results"></a>
 </h2>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># One at a time</span></span>
 <span><span class="va">trn2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/result.html">result</a></span><span class="op">(</span><span class="va">trn2</span>, <span class="st">"groups"</span>, match <span class="op">=</span> <span class="fl">1</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -261,23 +265,23 @@
 <div class="section level2">
 <h2 id="inspecting-state">Inspecting state<a class="anchor" aria-label="anchor" href="#inspecting-state"></a>
 </h2>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/stage_status.html">stage_status</a></span><span class="op">(</span><span class="va">trn</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>        stage   status complete total materialized</span>
-<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="dv">1</span>      groups complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
-<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="dv">2</span> grand_final complete        <span class="dv">1</span>     <span class="dv">1</span>         <span class="cn">TRUE</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>        stage   status complete total materialized</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a><span class="dv">1</span>      groups complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a><span class="dv">2</span> grand_final complete        <span class="dv">1</span>     <span class="dv">1</span>         <span class="cn">TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/routing_log.html">routing_log</a></span><span class="op">(</span><span class="va">trn</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>  source_stage_id         transition_id rule_applied     selected</span>
-<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a><span class="dv">1</span>          groups groups_to_grand_final   <span class="fu">top_n</span>(<span class="at">n=</span><span class="dv">2</span>) Lions, Bears</span>
-<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>  selected_count pool_before pool_after           timestamp</span>
-<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a><span class="dv">1</span>              <span class="dv">2</span>           <span class="dv">4</span>          <span class="dv">2</span> <span class="dv">2026-02-19</span> <span class="dv">13</span><span class="sc">:</span><span class="dv">44</span><span class="sc">:</span><span class="dv">04</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>  source_stage_id         transition_id rule_applied       selected</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a><span class="dv">1</span>          groups groups_to_grand_final   <span class="fu">top_n</span>(<span class="at">n=</span><span class="dv">2</span>) Wolves, Eagles</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  selected_count pool_before pool_after           timestamp</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="dv">1</span>              <span class="dv">2</span>           <span class="dv">4</span>          <span class="dv">2</span> <span class="dv">2026-02-20</span> <span class="dv">16</span><span class="sc">:</span><span class="dv">11</span><span class="sc">:</span><span class="dv">06</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="manual-advance-opt-in">Manual advance (opt-in)<a class="anchor" aria-label="anchor" href="#manual-advance-opt-in"></a>
 </h2>
 <p>Auto-advance is the default. Pass <code>auto_advance = FALSE</code> to control each stage transition yourself:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trn_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/tournament.html">tournament</a></span><span class="op">(</span><span class="va">teams</span>, auto_advance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/round_robin.html">round_robin</a></span><span class="op">(</span><span class="st">"groups"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/single_elim.html">single_elim</a></span><span class="op">(</span><span class="st">"grand_final"</span>, take <span class="op">=</span> <span class="fu"><a href="reference/top_n.html">top_n</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -291,15 +295,15 @@
 <span></span>
 <span><span class="co"># Groups are complete but grand_final hasn't opened yet</span></span>
 <span><span class="fu"><a href="reference/stage_status.html">stage_status</a></span><span class="op">(</span><span class="va">trn_m</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>        stage   status complete total materialized</span>
-<span id="cb31-2"><a href="#cb31-2" tabindex="-1"></a><span class="dv">1</span>      groups complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
-<span id="cb31-3"><a href="#cb31-3" tabindex="-1"></a><span class="dv">2</span> grand_final  blocked        <span class="dv">0</span>     <span class="dv">0</span>        <span class="cn">FALSE</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a>        stage   status complete total materialized</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="dv">1</span>      groups complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a><span class="dv">2</span> grand_final  blocked        <span class="dv">0</span>     <span class="dv">0</span>        <span class="cn">FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trn_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/advance.html">advance</a></span><span class="op">(</span><span class="va">trn_m</span>, <span class="st">"groups"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/stage_status.html">stage_status</a></span><span class="op">(</span><span class="va">trn_m</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a>        stage      status complete total materialized</span>
-<span id="cb33-2"><a href="#cb33-2" tabindex="-1"></a><span class="dv">1</span>      groups    complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
-<span id="cb33-3"><a href="#cb33-3" tabindex="-1"></a><span class="dv">2</span> grand_final in_progress        <span class="dv">0</span>     <span class="dv">1</span>         <span class="cn">TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a>        stage      status complete total materialized</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="dv">1</span>      groups    complete        <span class="dv">6</span>     <span class="dv">6</span>         <span class="cn">TRUE</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="dv">2</span> grand_final in_progress        <span class="dv">0</span>     <span class="dv">1</span>         <span class="cn">TRUE</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="api-reference">API reference<a class="anchor" aria-label="anchor" href="#api-reference"></a>
@@ -534,7 +538,7 @@
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
@@ -549,7 +553,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Theo Blauberg <br><small class="roles"> Author, maintainer </small>   </li>
+<li>Theo Blauberg <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0003-1780-0365" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 

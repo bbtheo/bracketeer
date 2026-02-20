@@ -2,7 +2,8 @@
 
 ## Authors
 
-- **Theo Blauberg**. Author, maintainer.
+- **Theo Blauberg**. Author, maintainer, copyright holder.
+  [](https://orcid.org/0000-0003-1780-0365)
 
 ## Citation
 

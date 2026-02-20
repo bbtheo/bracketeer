@@ -41,3 +41,14 @@ result(tournament, stage, match, score, overwrite = FALSE, auto_advance = NULL)
 ## Value
 
 Updated `tournament` object.
+
+## Examples
+
+``` r
+teams <- c("A", "B", "C", "D")
+trn <- tournament(teams) |>
+  round_robin("groups")
+
+# Enter a single result
+trn <- result(trn, "groups", match = 1, score = c(2, 1))
+```

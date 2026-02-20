@@ -23,3 +23,13 @@ swiss(participants, ...)
 ## Value
 
 A swiss_bracket object
+
+## Examples
+
+``` r
+# Swiss system followed by top-cut playoffs
+teams <- paste("Team", LETTERS[1:16])
+trn <- tournament(teams) |>
+  swiss("open", rounds = 5) |>
+  single_elim("playoffs", take = top_n(8))
+```

@@ -27,6 +27,14 @@ scoreboard.
 
 ## Installation
 
+Install from CRAN:
+
+``` r
+install.packages("bracketeer")
+```
+
+Or install the development version from GitHub:
+
 ``` r
 # install.packages("pak")
 pak::pak("bbtheo/bracketeer")
@@ -90,14 +98,14 @@ standings(trn, "groups")
 
 ``` R
   stage_id rank participant wins draws losses points score_diff sos
-1   groups    1       Lions    3     0      0      3          5   3
-2   groups    2       Bears    2     0      1      2          0   4
-3   groups    3      Eagles    1     0      2      1         -2   5
-4   groups    4      Wolves    0     0      3      0         -3   6
+1   groups    1      Wolves    2     0      1      2          1   4
+2   groups    2      Eagles    2     0      1      2          2   4
+3   groups    3       Lions    1     0      2      1         -1   5
+4   groups    4       Bears    1     0      2      1         -2   5
   head_to_head
-1            0
+1            1
 2            0
-3            0
+3            1
 4            0
 ```
 
@@ -113,7 +121,7 @@ winner(trn)
 ```
 
 ``` R
-[1] "Lions"
+[1] "Eagles"
 ```
 
 ## Stage formats
@@ -302,10 +310,10 @@ routing_log(trn)
 ```
 
 ``` R
-  source_stage_id         transition_id rule_applied     selected
-1          groups groups_to_grand_final   top_n(n=2) Lions, Bears
+  source_stage_id         transition_id rule_applied       selected
+1          groups groups_to_grand_final   top_n(n=2) Wolves, Eagles
   selected_count pool_before pool_after           timestamp
-1              2           4          2 2026-02-19 13:44:04
+1              2           4          2 2026-02-20 16:11:06
 ```
 
 ## Manual advance (opt-in)
