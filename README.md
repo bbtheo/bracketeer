@@ -2,6 +2,8 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/bbtheo/bracketeer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bbtheo/bracketeer/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/bbtheo/bracketeer/graph/badge.svg)](https://app.codecov.io/gh/bbtheo/bracketeer)
 <!-- badges: end -->
 
 # bracketeer <img src="man/figures/logo.png" align="right" height="150" />
