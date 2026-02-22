@@ -17,13 +17,3 @@ top_per_group(n)
 ## Value
 
 A `bracketeer_selector` object.
-
-## Examples
-
-``` r
-# World Cup style: 8 groups, top 2 per group advance
-teams <- paste("Team", sprintf("%02d", 1:32))
-trn <- tournament(teams) |>
-  round_robin("groups", groups = 8) |>
-  single_elim("knockout", take = top_per_group(2))
-```

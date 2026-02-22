@@ -13,19 +13,3 @@ previous_stage()
 ## Value
 
 Sentinel object to be resolved by transition wiring.
-
-## Examples
-
-``` r
-teams <- paste("Team", LETTERS[1:8])
-
-# Implicit: defaults to previous_stage()
-trn <- tournament(teams) |>
-  swiss("open", rounds = 3) |>
-  single_elim("playoffs", take = top_n(4))
-
-# Explicit: useful for branching
-trn <- tournament(teams) |>
-  round_robin("groups") |>
-  single_elim("finals", from = previous_stage(), take = top_n(2))
-```

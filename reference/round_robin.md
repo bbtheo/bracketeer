@@ -24,16 +24,3 @@ round_robin(participants, ...)
 ## Value
 
 A round_robin_bracket object
-
-## Examples
-
-``` r
-# Simple round robin
-trn <- tournament(c("A", "B", "C", "D")) |>
-  round_robin("groups")
-
-# Multiple groups (World Cup style)
-teams <- paste("Team", sprintf("%02d", 1:32))
-trn <- tournament(teams) |>
-  round_robin("groups", groups = 8)
-```

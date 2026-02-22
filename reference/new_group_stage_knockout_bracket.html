@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">bracketeer</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Internal group-stage-knockout bracket constructor</h1>
-      <small class="dont-index">Source: <a href="https://github.com/bbtheo/bracketeer/blob/main/R/group_stage_knockout.R" class="external-link"><code>R/group_stage_knockout.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/bbtheo/bracketeer/blob/v0.1.0/R/group_stage_knockout.R" class="external-link"><code>R/group_stage_knockout.R</code></a></small>
       <div class="d-none name"><code>new_group_stage_knockout_bracket.Rd</code></div>
     </div>
 
@@ -62,59 +62,6 @@
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
-    <div class="section level2">
-    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-
-
-<dl><dt id="arg-participants">participants<a class="anchor" aria-label="anchor" href="#arg-participants"></a></dt>
-<dd><p>Character vector of participant names, or a data.frame
-with a <code>name</code> column and optional <code>seed</code> column.</p></dd>
-
-
-<dt id="arg-groups">groups<a class="anchor" aria-label="anchor" href="#arg-groups"></a></dt>
-<dd><p>Number of groups to create.</p></dd>
-
-
-<dt id="arg-advance-per-group">advance_per_group<a class="anchor" aria-label="anchor" href="#arg-advance-per-group"></a></dt>
-<dd><p>Number of participants advancing from each group.</p></dd>
-
-
-<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>Seeding policy for initial participant allocation.</p></dd>
-
-
-<dt id="arg-group-home-away">group_home_away<a class="anchor" aria-label="anchor" href="#arg-group-home-away"></a></dt>
-<dd><p>Whether group matches are home/away double round robin.</p></dd>
-
-
-<dt id="arg-group-best-of">group_best_of<a class="anchor" aria-label="anchor" href="#arg-group-best-of"></a></dt>
-<dd><p>Optional odd-integer series length for group matches.</p></dd>
-
-
-<dt id="arg-group-tiebreakers">group_tiebreakers<a class="anchor" aria-label="anchor" href="#arg-group-tiebreakers"></a></dt>
-<dd><p>Optional ordered tiebreaker vector for groups.</p></dd>
-
-
-<dt id="arg-knockout-type">knockout_type<a class="anchor" aria-label="anchor" href="#arg-knockout-type"></a></dt>
-<dd><p>Knockout format: <code>"single_elim"</code> or <code>"double_elim"</code>.</p></dd>
-
-
-<dt id="arg-knockout-seed">knockout_seed<a class="anchor" aria-label="anchor" href="#arg-knockout-seed"></a></dt>
-<dd><p>Seeding policy for knockout-stage placement.</p></dd>
-
-
-<dt id="arg-third-place">third_place<a class="anchor" aria-label="anchor" href="#arg-third-place"></a></dt>
-<dd><p>Whether to include a third-place match in single elimination.</p></dd>
-
-
-<dt id="arg-grand-final-reset">grand_final_reset<a class="anchor" aria-label="anchor" href="#arg-grand-final-reset"></a></dt>
-<dd><p>Whether double-elim knockout can trigger a reset final.</p></dd>
-
-
-<dt id="arg-knockout-best-of">knockout_best_of<a class="anchor" aria-label="anchor" href="#arg-knockout-best-of"></a></dt>
-<dd><p>Optional odd-integer series length for knockout matches.</p></dd>
-
-</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A group_stage_knockout object.</p>

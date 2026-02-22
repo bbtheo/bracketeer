@@ -1,7 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://bbtheo.github.io/bracketeer/404.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/AGENTS.html</loc></url>
-<url><loc>https://bbtheo.github.io/bracketeer/LICENSE-text.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/LICENSE.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/articles/error-catalog.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/articles/fifa-world-cup.html</loc></url>
@@ -22,7 +21,6 @@
 <url><loc>https://bbtheo.github.io/bracketeer/reference/bottom_n.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/bottom_per_group.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/bracket.html</loc></url>
-<url><loc>https://bbtheo.github.io/bracketeer/reference/bracketeer-package.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/build.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/build_tournament.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/calc_byes.html</loc></url>
@@ -66,7 +64,6 @@
 <url><loc>https://bbtheo.github.io/bracketeer/reference/normalize_seed_method.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/normalize_tiebreakers.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/previous_stage.html</loc></url>
-<url><loc>https://bbtheo.github.io/bracketeer/reference/print.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/process_byes.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/qualify_losers.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/qualify_remaining.html</loc></url>
@@ -89,7 +86,6 @@
 <url><loc>https://bbtheo.github.io/bracketeer/reference/split_stage.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/stage_status.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/standings.html</loc></url>
-<url><loc>https://bbtheo.github.io/bracketeer/reference/summary.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/swiss.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/teardown.html</loc></url>
 <url><loc>https://bbtheo.github.io/bracketeer/reference/tiebreaker_chain.html</loc></url>
